@@ -26,4 +26,4 @@ The app runs the Tesseract OCR system locally from compiled arm libraries for an
 
 #Progress
 Application works well under controlled conditions (good lighting and a printout of the SSID and Key). 
-Back of the router test produces varied results mainly due to the following accuracy depreciation problem: [Tesseract FAQ](https://code.google.com/p/tesseract-ocr/wiki/FAQ#Is_there_a_Minimum_Text_Size?_(It_won't_read_screen_text!)
+Back of the router test produces varied results mainly due to the following accuracy depreciation problem: [Tesseract FAQ](https://code.google.com/p/tesseract-ocr/wiki/FAQ#Is_there_a_Minimum_Text_Size?_(It_won't_read_screen_text!))
