@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -22,13 +23,13 @@ public class Connect extends AsyncTask<Void, Void, Void>{
     String SSID;
     String key;
     MainActivity main;
-
+    String connect_to;
     public Connect(MainActivity main, String SSID, String key) {
         this.main = main;
         context = main.getApplicationContext();
         this.key = key;
         this.SSID = SSID;
-        wm =  (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
     }
 
     @Override
@@ -39,6 +40,8 @@ public class Connect extends AsyncTask<Void, Void, Void>{
 
     @Override
     protected void onPostExecute(Void aVoid) {
+        Toast.makeText(main.getApplicationContext(), "Connecting to \"" + connect_to + "\" with the key \"" + key + "\"", Toast.LENGTH_LONG).show();
+
         Animation fadeOutAnimation = AnimationUtils.loadAnimation(main.getApplicationContext(), R.anim.fade_out);
         fadeOutAnimation.setFillAfter(false);
         main.grey.startAnimation(fadeOutAnimation);
@@ -81,7 +84,7 @@ public class Connect extends AsyncTask<Void, Void, Void>{
             }
         }
 
-
+        connect_to = bestSSIDmatch;
         Log.i("Connection", "Best SSID match is \"" + bestSSIDmatch + "\"");
 
         WifiConfiguration wc = new WifiConfiguration();

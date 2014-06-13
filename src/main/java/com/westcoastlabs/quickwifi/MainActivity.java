@@ -128,6 +128,27 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        capture.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+                    capture.setImageResource(R.drawable.capture_press);
+                    Log.d("TouchTest", "Touch down");
+                }
+
+                else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+                    capture.setImageResource(R.drawable.capture);
+                    Log.d("TouchTest", "Touch up");
+                    new TakePicture(mCamera, TEMP_IMAGE, main).execute();
+                    //mCamera.takePicture(null, null, null);
+
+                    cameraSound(CAPTURE);
+                }
+
+                return true;
+            }
+        });
+
         capture.setOnClickListener(new OnClickListener() {
 
             @Override

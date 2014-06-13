@@ -77,8 +77,6 @@ public class ExtractAndConnect extends AsyncTask<Void, Void, Void> {
         }
         else {
             //Success, move on to connect
-            Toast.makeText(main.getApplicationContext(), "SSID is \"" + SSID + "\"\n Key is \"" + key + "\"", Toast.LENGTH_SHORT).show();
-
             main.load.setText("Connecting to best SSID match");
             new Connect(main, SSID, key).execute();
         }

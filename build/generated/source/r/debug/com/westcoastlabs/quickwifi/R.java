@@ -877,14 +877,16 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int cambutton=0x7f020057;
-        public static final int crop__divider=0x7f020058;
-        public static final int crop__ic_cancel=0x7f020059;
-        public static final int crop__ic_done=0x7f02005a;
-        public static final int crop__selectable_background=0x7f02005b;
-        public static final int crop__texture=0x7f02005c;
-        public static final int crop__tile=0x7f02005d;
-        public static final int grey=0x7f02005e;
-        public static final int ic_launcher=0x7f02005f;
+        public static final int capture=0x7f020058;
+        public static final int capture_press=0x7f020059;
+        public static final int crop__divider=0x7f02005a;
+        public static final int crop__ic_cancel=0x7f02005b;
+        public static final int crop__ic_done=0x7f02005c;
+        public static final int crop__selectable_background=0x7f02005d;
+        public static final int crop__texture=0x7f02005e;
+        public static final int crop__tile=0x7f02005f;
+        public static final int grey=0x7f020060;
+        public static final int ic_launcher=0x7f020061;
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f08003c;
@@ -905,7 +907,7 @@ containing a value of this type.
         public static final int beginning=0x7f08000a;
         public static final int btn_cancel=0x7f080044;
         public static final int btn_done=0x7f080045;
-        public static final int camera_preview=0x7f08003d;
+        public static final int camera_preview=0x7f08003e;
         public static final int checkbox=0x7f08002d;
         public static final int collapseActionView=0x7f080011;
         public static final int crop_image=0x7f080043;
@@ -923,15 +925,15 @@ containing a value of this type.
         public static final int icon=0x7f08002a;
         public static final int ifRoom=0x7f08000e;
         public static final int image=0x7f080027;
-        public static final int imageView1=0x7f080040;
-        public static final int imageView2=0x7f080041;
+        public static final int imageView1=0x7f080041;
+        public static final int imageView2=0x7f08003d;
         public static final int listMode=0x7f080001;
         public static final int list_item=0x7f080029;
         public static final int middle=0x7f08000b;
         public static final int never=0x7f08000d;
         public static final int none=0x7f080009;
         public static final int normal=0x7f080000;
-        public static final int progressBar1=0x7f08003e;
+        public static final int progressBar1=0x7f08003f;
         public static final int progress_circular=0x7f080018;
         public static final int progress_horizontal=0x7f080019;
         public static final int radio=0x7f08002f;
@@ -952,7 +954,7 @@ containing a value of this type.
         public static final int split_action_bar=0x7f08001e;
         public static final int submit_area=0x7f080039;
         public static final int tabMode=0x7f080002;
-        public static final int textView1=0x7f08003f;
+        public static final int textView1=0x7f080040;
         public static final int title=0x7f08002b;
         public static final int top_action_bar=0x7f080020;
         public static final int up=0x7f080021;
