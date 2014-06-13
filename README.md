@@ -18,8 +18,8 @@ The app runs the Tesseract OCR system locally from compiled arm libraries for an
 #How it works
 * Quick WiFi uses the android camera library to create it's own camera instance
 * The user takes a photo
-* The user crops the photo to try and include just the SSID and Key text, using the [android-crop](https://github.com/jdamcd/android-crop) library, in order to improve the accuracy of OCR reading
-* Quick WiFi then calls Tesseract to extract the text from the cropped image
+* The user crops the photo to try and include just the SSID and Key text, using the [android-crop](https://github.com/jdamcd/android-crop) library, in order to improve the accuracy of OCR reading (removal of extraneuos text)
+* Quick WiFi then calls [Tesseract](https://github.com/rmtheis/tess-two) to extract the text from the cropped image
 * Then the SSID and the Key is extracted from the text
 * Quick WiFi calculates the hamming distance of the SSID against the SSID of each currently available WiFi connection (This allows space for error in the SSID but not in the key)
 * It then connects the network with the shortest hamming distance using the aquired key.
