@@ -6,7 +6,7 @@ Quick-Wifi
 * Implement asset extraction (Extract Tesseract english training data to users external storage dir)
 * Improve UI
 * Camera flash and picture mode options
-* Bleeding edge and versioned apk download (I wont be putting this app on the Play Store)
+* Bleeding edge and versioned apk download (I won't be putting this app on the Play Store)
 
 #Idea
 Use of OCR to automatically connect to a WiFi AP after taking a photo of the underside of the router (that contains SSID and Key information).
