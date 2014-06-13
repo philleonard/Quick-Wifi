@@ -7,6 +7,7 @@ Quick-Wifi
 * Improve UI
 * Camera flash and picture mode options
 * Intro screen with app information.
+* WiFi connection status feedback
 * Bleeding edge and versioned apk download (I won't be putting this app on the Play Store)
 
 #Aim
@@ -31,3 +32,12 @@ The app runs the Tesseract OCR system locally from compiled arm libraries for an
 #Progress
 Application works well under controlled conditions (good lighting and a printout of the SSID and Key). 
 Back of the router test produces varied results mainly due to the following accuracy depreciation problem: [Tesseract FAQ](https://code.google.com/p/tesseract-ocr/wiki/FAQ#Is_there_a_Minimum_Text_Size?_(It_won't_read_screen_text!))
+
+
+#Screenshots of Progress
+Capturing an image...
+![Alt text](/readme_img/photo.png?raw=true "Underside of a typical router")
+Cropping image..
+![Alt text](/readme_img/crop.png?raw=true "Underside of a typical router")
+Creating a configured WiFi connection using SSID and Key and adding it to the set of configured networks. Android will then handle connecting to it on it's own. 
+![Alt text](/readme_img/connect.png?raw=true "Connecting")
