@@ -311,6 +311,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
     }
+    /*
+
+     */
 
     protected void cropImage() {
         Uri inputUri = Uri.parse("file:///" + TEMP_IMAGE);
