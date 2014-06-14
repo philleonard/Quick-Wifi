@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="liblept">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/quickWifi/libs/armeabi/liblept.so" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

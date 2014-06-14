@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="tess-two">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/quickWifi/libs/tess-two.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

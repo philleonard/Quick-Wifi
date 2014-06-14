@@ -1,0 +1,6 @@
+<!-- From: file:/home/ppl/Dev/android-crop/lib/src/main/AndroidManifest.xml --><manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.soundcloud.android.crop">
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19"/>
+
+    <application android:allowBackup="true"/>
+
+</manifest>

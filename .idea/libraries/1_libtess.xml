@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="1_libtess">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/quickWifi/libs/armeabi-v7a/libtess.so" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

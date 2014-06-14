@@ -1,35 +1,20 @@
-apply plugin: 'android'
-
-android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
-    defaultConfig {
-        applicationId 'com.westcoastlabs.quickwifi'
-        minSdkVersion 9
-        targetSdkVersion 19
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        mavenCentral()
     }
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.11.+'
+        //compile(name:'android-crop-0.9.8', ext:'aar')
+        //compile 'com.soundcloud.android.crop:android-crop-0.9.8:0.9.8@aar'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs 'libs'
         }
     }
-    productFlavors {
-    }
-}
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-dependencies {
-    compile 'com.android.support:support-v4:+'
-    compile 'com.android.support:appcompat-v7:+'
-    compile files('libs/tess-two.jar')
-    compile files('libs/armeabi/liblept.so')
-    compile files('libs/armeabi/libtess.so')
-    compile files('libs/armeabi-v7a/liblept.so')
-    compile files('libs/armeabi-v7a/libtess.so')
-    //compile files('libs/android-crop-0.9.8.aar')
-    compile(name: 'android-crop-0.9.8', ext: 'aar')
 }
