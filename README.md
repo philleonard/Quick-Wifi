@@ -3,9 +3,9 @@ Quick-Wifi
 
 ##TODO
 
-* Implement asset extraction (Extract Tesseract english training data to users external storage dir)
+* <s>Implement asset extraction<s> and make extarction threaded.
 * Improve UI
-* Camera flash and picture mode options
+* <s>Camera flash<s> and picture mode options
 * Intro screen with app information.
 * WiFi connection status feedback
 * Bleeding edge and versioned apk download (I won't be putting this app on the Play Store)
