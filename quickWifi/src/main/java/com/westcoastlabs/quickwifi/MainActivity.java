@@ -95,44 +95,6 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    public void initDir() {
-        //NEEDS TO BE THREADED
-        File home = new File(ROOT);
-        if (!home.isDirectory()) {
-            home.mkdir();
-        }
-
-        File f = new File(TRAINED_DATA);
-        if (!f.isDirectory()) {
-            f.mkdir();
-        }
-
-        File g = new File(TRAINED_DATA + "/tessdata");
-        if (!g.isDirectory()) {
-            g.mkdir();
-        }
-        AssetManager assetManager = getApplicationContext().getAssets();
-
-        File trained = new File(ENG_TRAINED);
-        if (!(trained.isFile() || trained.exists())) {
-            try {
-                InputStream in = assetManager.open("eng.traineddata");
-                OutputStream out = new FileOutputStream(ENG_TRAINED);
-                byte[] buffer = new byte[1024];
-                int read;
-                while((read = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, read);
-                }
-
-                Log.i("Init", "Trained Data written");
-            } catch (Exception e){
-                Toast.makeText(getApplicationContext(), "Error writing tesseract data. Can't work without it. Please check storage.", Toast.LENGTH_LONG).show();
-                finish();
-                e.printStackTrace();
-            }
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,10 +104,6 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
-        File f = new File(ENG_TRAINED);
-        if (!f.isFile()) {
-            initDir();
-        }
         //ExtractAssets extract = new ExtractAssets();
         //extract.copyFolder(ROOT, getApplicationContext());
         try {
@@ -190,7 +148,8 @@ public class MainActivity extends ActionBarActivity {
                     public void onAutoFocus(boolean success, Camera camera) {
                         cameraSound(CAPTURE);
 
-                        new TakePicture(mCamera, TEMP_IMAGE, main).execute();
+                        processingView();
+                        mCamera.takePicture(null, null, mPicture);
                     }
                 };
 
@@ -212,30 +171,64 @@ public class MainActivity extends ActionBarActivity {
                 else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
                     capture.setImageResource(R.drawable.capture);
                     Log.d("TouchTest", "Touch up");
-                    new TakePicture(mCamera, TEMP_IMAGE, main).execute();
-                    //mCamera.takePicture(null, null, null);
-
+                    //new TakePicture(mCamera, TEMP_IMAGE, main).execute();
                     cameraSound(CAPTURE);
+                    processingView();
+                    mCamera.takePicture(null, null, mPicture);
+
+
                 }
 
                 return true;
             }
         });
 
-        capture.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //mCamera.setPreviewCallback(null);
-                //new TakePicture(mCamera, mPicture).execute();
-                new TakePicture(mCamera, TEMP_IMAGE, main).execute();
-                //mCamera.takePicture(null, null, null);
-
-                cameraSound(CAPTURE);
-            }
-        });
         main = this;
+
+        File f = new File(ENG_TRAINED);
+        if (!f.isFile()) {
+            Log.i("Init", "Init required");
+            new Init(this).execute();
+        }
     }
+
+    private PictureCallback mPicture = new PictureCallback() {
+
+        String TAG = "Picture Callback";
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+
+            if (data == null) {
+                Log.e(TAG, "NULL DATA IN CALLBACK");
+            }
+
+            try {
+                camera.startPreview();
+            } catch (Exception e) {}
+
+            File pictureFile = new File(TEMP_IMAGE);
+            if (pictureFile == null) {
+                Log.d(TAG, "Error creating media file, check storage permissions: ");
+                return;
+            }
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.close();
+            } catch (FileNotFoundException e) {
+                Log.d(TAG, "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "Error accessing file: " + e.getMessage());
+            }
+            onPhotoTaken();
+        }
+
+
+    };
 
     public void processingView() {
         //grey.setVisibility(View.VISIBLE);
@@ -243,10 +236,10 @@ public class MainActivity extends ActionBarActivity {
         prog.setVisibility(View.VISIBLE);
         load.setVisibility(View.VISIBLE);
         flash.setVisibility(View.INVISIBLE);
-        Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-        fadeInAnimation.setFillAfter(true);
+        //Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        //fadeInAnimation.setFillAfter(true);
 
-        grey.startAnimation(fadeInAnimation);
+        //grey.startAnimation(fadeInAnimation);
     }
 
     public void addCameraParams() {
@@ -408,14 +401,17 @@ public class MainActivity extends ActionBarActivity {
     protected void cropImage() {
         Uri inputUri = Uri.parse("file:///" + TEMP_IMAGE);
         Uri outputUri = Uri.parse("file:///" + TEMP_IMAGE_CROPPED);
-        new Crop(inputUri).output(outputUri).start(this);
+        Bitmap a;
+        new Crop(inputUri).output(outputUri).start(main);
     }
 
     @Override
     protected void onActivityResult(int req, int res, Intent data) {
         super.onActivityResult(req, res, data);
         if (req == Crop.REQUEST_CROP) {
-            init();
+            try {
+                init();
+            } catch (Exception e) {}
             mCamera.startPreview();
             load.setText("Extracting Text");
             if (res == RESULT_CANCELED) {
@@ -430,9 +426,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void fadeBack() {
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(main.getApplicationContext(), R.anim.fade_out);
-        fadeOutAnimation.setFillAfter(false);
-        main.grey.startAnimation(fadeOutAnimation);
+        //Animation fadeOutAnimation = AnimationUtils.loadAnimation(main.getApplicationContext(), R.anim.fade_out);
+        //fadeOutAnimation.setFillAfter(false);
+        //main.grey.startAnimation(fadeOutAnimation);
 
         capture.setVisibility(View.VISIBLE);
         flash.setVisibility(View.VISIBLE);

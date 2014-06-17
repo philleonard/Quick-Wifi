@@ -1,10 +1,14 @@
 package com.westcoastlabs.quickwifi;
 
 import android.content.Context;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -24,6 +28,7 @@ public class Connect extends AsyncTask<Void, Void, Void>{
     String key;
     MainActivity main;
     String connect_to;
+    boolean canconnect = false;
     public Connect(MainActivity main, String SSID, String key) {
         this.main = main;
         context = main.getApplicationContext();
@@ -40,7 +45,10 @@ public class Connect extends AsyncTask<Void, Void, Void>{
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        Toast.makeText(main.getApplicationContext(), "Connecting to \"" + connect_to + "\" with the key \"" + key + "\"", Toast.LENGTH_LONG).show();
+        if (canconnect)
+            Toast.makeText(main.getApplicationContext(), "Connecting to \"" + connect_to + "\" with the key \"" + key + "\"", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(main.getApplicationContext(), "Cant find a close match to " + SSID + " in range", Toast.LENGTH_LONG).show();
 
         Animation fadeOutAnimation = AnimationUtils.loadAnimation(main.getApplicationContext(), R.anim.fade_out);
         fadeOutAnimation.setFillAfter(false);
@@ -85,6 +93,10 @@ public class Connect extends AsyncTask<Void, Void, Void>{
             }
         }
 
+        if (bestSSIDmatch.equals("")) {
+            return;
+        }
+        canconnect = true;
         connect_to = bestSSIDmatch;
         Log.i("Connection", "Best SSID match is \"" + bestSSIDmatch + "\"");
 
@@ -99,6 +111,7 @@ public class Connect extends AsyncTask<Void, Void, Void>{
         wc.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         wc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);*/
         // connect to and enable the connection
+
         wc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
         int netId = wm.addNetwork(wc);
         wm.enableNetwork(netId, true);
@@ -113,6 +126,20 @@ public class Connect extends AsyncTask<Void, Void, Void>{
                 break;
             }
         }
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(main);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("SSID", bestSSIDmatch);
+        editor.commit();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+        context.registerReceiver(new WifiReceiver(), intentFilter);
+
+
+
     }
 
     public static int getHammingDistance(String sequence1, String sequence2) {

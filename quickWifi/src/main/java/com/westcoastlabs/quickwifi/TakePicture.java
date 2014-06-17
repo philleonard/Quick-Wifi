@@ -30,12 +30,7 @@ public class TakePicture extends AsyncTask<Void, Void, Void>{
         main.processingView();
     }
 
-    @Override
-	protected Void doInBackground(Void... params) {
-		// TODO Auto-generated method stub
-		mCamera.takePicture(null, null, mPicture);
-		return null;
-	}
+
 
     private PictureCallback mPicture = new PictureCallback() {
 
@@ -43,6 +38,14 @@ public class TakePicture extends AsyncTask<Void, Void, Void>{
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
+            Log.e(TAG, "Picture Callback");
+            Log.e(TAG, "Picture Callback");
+            Log.e(TAG, "Picture Callback");
+            Log.e(TAG, "Picture Callback");
+            if (data == null) {
+                Log.e(TAG, "NULL DATA IN CALLBACK");
+            }
+
             try {
                 camera.startPreview();
             } catch (Exception e) {}
@@ -67,6 +70,13 @@ public class TakePicture extends AsyncTask<Void, Void, Void>{
         }
 
     };
+
+    @Override
+    protected Void doInBackground(Void... params) {
+        // TODO Auto-generated method stub
+        mCamera.takePicture(null, null, mPicture);
+        return null;
+    }
 
     @Override
     protected void onPostExecute(Void aVoid) {

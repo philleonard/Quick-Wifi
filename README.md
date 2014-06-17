@@ -3,11 +3,11 @@ Quick-Wifi
 
 ##TODO
 
-* <s>Implement asset extraction</s> and make extarction threaded.
+* <s>Implement asset extraction and make extarction threaded.</s>
 * Improve UI
 * <s>Camera flash</s> and picture mode options
 * Intro screen with app information.
-* WiFi connection status feedback
+* <s>WiFi connection status feedback</s>
 * Bleeding edge and versioned apk download (I won't be putting this app on the Play Store)
 
 ##Aim

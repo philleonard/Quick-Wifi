@@ -17,6 +17,7 @@ public class ExtractSSIDandKey {
         String SSID = "";
         int SSIDLoc = -1;
         int nameLoc = -1;
+        int netLoc = -1;
         Log.i("Info Extraction: ", "Finding SSID");
         for (int x = 0; x < textSplit.length; x++) {
             //Possibly need contains cases
@@ -24,21 +25,16 @@ public class ExtractSSIDandKey {
                 SSIDLoc = x;
             else if (textSplit[x].equalsIgnoreCase("Name"))
                 nameLoc = x;
+            else if (textSplit[x].equalsIgnoreCase("Network"))
+                netLoc = x;
             Log.i("Info Extraction: ", textSplit[x]);
         }
 
-        if (SSIDLoc == -1 && nameLoc == -1) {
-            throw new NoWifiInfoFoundException("No SSID found");
-        }
-
-        if(nameLoc < SSIDLoc) {
-            //SSID marker closer
-            SSID = textSplit[SSIDLoc + 1]; //Rough guess, needs improvement.
-        }
-        else if ((SSIDLoc == -1 && nameLoc != -1) || (nameLoc > SSIDLoc)) {
-            //No SSID marker just Name, or Name is closer than SSID
-            SSID = textSplit[nameLoc + 1];//Rough guess, needs improvement.
-        }
+        int maxValue = Math.max(SSIDLoc, Math.max(nameLoc, netLoc));
+        if (maxValue == -1)
+            throw new NoWifiInfoFoundException("No Key found");
+        else
+            SSID = textSplit[maxValue + 1];
         return SSID;
     }
 
