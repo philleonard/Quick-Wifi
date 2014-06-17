@@ -30,7 +30,7 @@ public class WifiReceiver extends BroadcastReceiver {
 
         final String action = intent.getAction();
 
-        //Log.i("onRecv action", action);
+        Log.i("onRecv action", action);
         ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conMan.getActiveNetworkInfo();
         if (netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI) {
@@ -76,6 +76,8 @@ public class WifiReceiver extends BroadcastReceiver {
                         context.unregisterReceiver(this);
                         return;
                     }
+                    last_toast = Toast.makeText(context, "Connecting...", Toast.LENGTH_LONG);
+                    last_toast.show();
                     break;
                 case FOUR_WAY_HANDSHAKE:Log.i("SupplicantState", "FOUR_WAY_HANDSHAKE");
                     last_toast = Toast.makeText(context, "Handshake...", Toast.LENGTH_SHORT);
@@ -97,7 +99,9 @@ public class WifiReceiver extends BroadcastReceiver {
             }
             return;
         }
-        last_toast = Toast.makeText(context, "Connecting...", Toast.LENGTH_SHORT);
-        last_toast.show();
+        else {
+            last_toast = Toast.makeText(context, "Connecting...", Toast.LENGTH_LONG);
+            last_toast.show();
+        }
     }
 }

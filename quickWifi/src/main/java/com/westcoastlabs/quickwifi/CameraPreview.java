@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
@@ -46,6 +47,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setParameters(parameters);   
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
+
         } catch (Exception e) {
             //Toast.makeText(getContext(), "Camera preview error", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Error setting camera preview: " + e.getMessage());
