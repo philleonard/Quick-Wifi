@@ -1,5 +1,6 @@
 package com.westcoastlabs.quickwifi;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,7 +12,15 @@ import java.util.List;
 
 import com.soundcloud.android.crop.*;
 
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.graphics.Matrix;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -34,10 +43,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -59,11 +70,12 @@ import android.provider.MediaStore;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class MainActivity extends ActionBarActivity {
 
+    SensorManager sensorManager;
     public MainActivity main;
     protected int FOCUS = 0;
     protected int CAPTURE = 1;
     protected int AUTO = 3;
-
+    private Sensor sensor;
     protected TextView load;
     protected ProgressBar prog;
     protected ImageView capture, grey, flash;
@@ -74,6 +86,8 @@ public class MainActivity extends ActionBarActivity {
     protected String TRAINED_DATA = ROOT + "tesseract-ocr";
     protected String ENG_TRAINED = TRAINED_DATA + "/tessdata/eng.traineddata";
 
+    public String ORIENTATION = "";
+    public boolean port = true;
     protected boolean taken;
     boolean flashon = false;
     protected int CROP = 2;
@@ -90,18 +104,19 @@ public class MainActivity extends ActionBarActivity {
 
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.cam_prev);
         preview.addView(mPreview);
 
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_main);
 
         //ExtractAssets extract = new ExtractAssets();
@@ -114,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         grey = (ImageView) findViewById(R.id.imageView2);
-        flash = (ImageView) findViewById(R.id.imageView);
+        flash = (ImageView) findViewById(R.id.imageView4);
         flash.setVisibility(View.VISIBLE);
         flash.setOnClickListener(new OnClickListener() {
             @Override
@@ -122,19 +137,20 @@ public class MainActivity extends ActionBarActivity {
                 try {
                     flashon = !flashon;
                     Camera.Parameters params = mCamera.getParameters();
-                    if (flashon) {
-                        flash.setImageResource(R.drawable.flash);
+
+                    if (flashon)
                         params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-                    } else {
-                        flash.setImageResource(R.drawable.noflash);
+                    else
                         params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                    }
+
+                    setOrientation();
+
                     mCamera.setParameters(params);
                 } catch(Exception e) {}
             }
         });
         prog = (ProgressBar) findViewById(R.id.progressBar1);
-        capture = (ImageView) findViewById(R.id.imageView1);
+        capture = (ImageView) findViewById(R.id.imageView3);
         load = (TextView) findViewById(R.id.textView1);
         load.setTextColor(Color.parseColor("#FF8800"));
         capture.setOnLongClickListener(new OnLongClickListener() {
@@ -164,7 +180,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
-                    capture.setImageResource(R.drawable.capture_press);
+                    if (ORIENTATION.equals("port-up"))
+                        capture.setImageResource(R.drawable.capture_press);
+                    else if(ORIENTATION.equals("land-left"))
+                        capture.setImageResource(R.drawable.capture_presslandl);
+                    else if(ORIENTATION.equals("land-right"))
+                        capture.setImageResource(R.drawable.capture_presslandr);
                     Log.d("TouchTest", "Touch down");
                 }
 
@@ -175,13 +196,52 @@ public class MainActivity extends ActionBarActivity {
                     cameraSound(CAPTURE);
                     processingView();
                     mCamera.takePicture(null, null, mPicture);
-
-
                 }
 
                 return true;
             }
         });
+
+        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        List<android.hardware.Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ORIENTATION);
+        if (sensorList.size() > 0) {
+            sensor = sensorList.get(0);
+        }
+        else {
+            Log.i("Sensor", "Orientation sensor not present");
+        }
+        sensorManager.registerListener(orientationListener, sensor, 0, null);
+
+        /*
+        SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(new SensorEventListener() {
+            int orientation=-1;
+
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.values[1]<7.5 && event.values[1]>-7.5 ) {
+                    if (orientation!=1) {
+                        Log.d("Sensor", "Landscape");
+                        port = false;
+                        setOrientation();
+                    }
+                    orientation=1;
+                } else {
+                    if (orientation!=0) {
+                        Log.d("Sensor", "Portrait");
+                        port = true;
+                        setOrientation();
+                    }
+                    orientation=0;
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // TODO Auto-generated method stub
+
+            }
+        }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);*/
 
         main = this;
 
@@ -191,6 +251,81 @@ public class MainActivity extends ActionBarActivity {
             new Init(this).execute();
         }
     }
+    private SensorEventListener orientationListener = new SensorEventListener() {
+
+        @Override
+        public void onAccuracyChanged(Sensor arg0, int arg1) {
+
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            if (sensorEvent.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+                float azimuth = sensorEvent.values[0];
+                float pitch = sensorEvent.values[1];
+                float roll = sensorEvent.values[2];
+
+                if (pitch < -45 && pitch > -135) {
+                    if (!ORIENTATION.equals("port-up")) {
+                        Log.i("Sensor", "Top side of the phone is Up!");
+                        ORIENTATION = "port-up";
+                        setOrientation();
+                    }
+                } else if (pitch > 45 && pitch < 135) {
+                    if (!ORIENTATION.equals("port-down")) {
+                        Log.i("Sensor", "Bottom side of the phone is Up!");
+                        ORIENTATION = "port-down";
+                        //setOrientation();
+                    }
+
+                } else if (roll > 45) {
+                    if (!ORIENTATION.equals("land-left")) {
+                        Log.i("Sensor", "Right side of the phone is Up!");
+                        ORIENTATION = "land-left";
+                        setOrientation();
+                    }
+
+                } else if (roll < -45) {
+                    if (!ORIENTATION.equals("land-right")) {
+                        Log.i("Sensor", "Left side of the phone is Up!");
+                        ORIENTATION = "land-right";
+                        setOrientation();
+                    }
+                }
+
+            }
+        }
+
+    };
+
+    public void setOrientation() {
+
+        if (ORIENTATION.equals("port-up")) {
+            capture.setImageResource(R.drawable.capture);
+            if (flashon)
+                flash.setImageResource(R.drawable.flash);
+            else
+                flash.setImageResource(R.drawable.noflash);
+        }
+        /*else if (ORIENTATION.equals("port-down")) {
+
+        }*/
+        else if (ORIENTATION.equals("land-right")) {
+            capture.setImageResource(R.drawable.capturelandr);
+            if (flashon)
+                flash.setImageResource(R.drawable.flashlandr);
+            else
+                flash.setImageResource(R.drawable.noflashlandr);
+
+        }
+        else if (ORIENTATION.equals("land-left")) {
+            capture.setImageResource(R.drawable.capturelandl);
+            if (flashon)
+                flash.setImageResource(R.drawable.flashlandl);
+            else
+                flash.setImageResource(R.drawable.noflashlandl);
+        }
+    }
 
     private PictureCallback mPicture = new PictureCallback() {
 
@@ -198,7 +333,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-
+            Log.i("Picture Callback", "Saving Image");
             if (data == null) {
                 Log.e(TAG, "NULL DATA IN CALLBACK");
             }
@@ -213,17 +348,36 @@ public class MainActivity extends ActionBarActivity {
                 return;
             }
 
-            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-
+            Log.i("Picture Callback", "Writing image");
             try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                //bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.write(data);
                 fos.close();
             } catch (FileNotFoundException e) {
                 Log.d(TAG, "File not found: " + e.getMessage());
             } catch (IOException e) {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
+
+            String rotate = "";
+            if (ORIENTATION.equals("port-up"))
+                rotate = String.valueOf(ExifInterface.ORIENTATION_ROTATE_90);
+            else if (ORIENTATION.equals("land-right"))
+                rotate = String.valueOf(ExifInterface.ORIENTATION_ROTATE_180);
+            else if (ORIENTATION.equals("port-down"))
+                rotate = String.valueOf(ExifInterface.ORIENTATION_ROTATE_270);
+
+            if (!rotate.equals("")) {
+                try {
+                    ExifInterface exif = new ExifInterface(TEMP_IMAGE);
+                    exif.setAttribute(ExifInterface.TAG_ORIENTATION, rotate);
+                    exif.saveAttributes();
+                } catch (IOException e) {
+                    Log.e(TAG, "Failed");
+                }
+            }
+
             onPhotoTaken();
         }
 
@@ -257,7 +411,7 @@ public class MainActivity extends ActionBarActivity {
 
         params.setPictureSize(sizes.get(0).width, sizes.get(0).height);
 
-        params.setColorEffect(Camera.Parameters.EFFECT_MONO);
+        //params.setColorEffect(Camera.Parameters.EFFECT_MONO);
 
         mCamera.setParameters(params);
 
@@ -334,9 +488,11 @@ public class MainActivity extends ActionBarActivity {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
+            c.setDisplayOrientation(90);
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
         }
+
         return c; // returns null if camera is unavailable
     }
 
@@ -352,6 +508,7 @@ public class MainActivity extends ActionBarActivity {
                 // during onPause() and re-open() it during onResume()).
                 mCamera.release();
 
+                mPreview = null;
                 mCamera = null;
             }
         } catch (Exception e) {
@@ -368,6 +525,7 @@ public class MainActivity extends ActionBarActivity {
         // TODO Auto-generated method stub
         super.onDestroy();
         stopPreviewAndFreeCamera();
+        sensorManager.unregisterListener(orientationListener);
     }
 
 
@@ -401,7 +559,7 @@ public class MainActivity extends ActionBarActivity {
     protected void cropImage() {
         Uri inputUri = Uri.parse("file:///" + TEMP_IMAGE);
         Uri outputUri = Uri.parse("file:///" + TEMP_IMAGE_CROPPED);
-        Bitmap a;
+        Log.i("Crop", "Starting crop");
         new Crop(inputUri).output(outputUri).start(main);
     }
 
@@ -409,10 +567,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int req, int res, Intent data) {
         super.onActivityResult(req, res, data);
         if (req == Crop.REQUEST_CROP) {
-            try {
-                init();
-            } catch (Exception e) {}
-            mCamera.startPreview();
             load.setText("Extracting Text");
             if (res == RESULT_CANCELED) {
                 Toast.makeText(getApplicationContext(), "Retake Image.", Toast.LENGTH_SHORT).show();
@@ -420,9 +574,12 @@ public class MainActivity extends ActionBarActivity {
             } else {
                 new GetText(TEMP_IMAGE_CROPPED, "eng", TRAINED_DATA, this).execute();
             }
-
+            try {
+                init();
+            } catch (Exception e) {}
+            mCamera.startPreview();
         }
-
+        setOrientation();
     }
 
     public void fadeBack() {
@@ -434,6 +591,7 @@ public class MainActivity extends ActionBarActivity {
         flash.setVisibility(View.VISIBLE);
         load.setVisibility(View.INVISIBLE);
         prog.setVisibility(View.INVISIBLE);
-        load.setText("");
+        load.setText("Saving Image");
     }
+
 }

@@ -52,6 +52,7 @@ public class GetText extends AsyncTask<Void, Void, Void>{
  
         try {
             ExifInterface exif = new ExifInterface(bitmapLoc);
+
             int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
  
             Log.v(LOG_TAG, "Orient: " + exifOrientation);

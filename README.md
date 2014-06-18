@@ -10,6 +10,12 @@ Quick-Wifi
 * <s>WiFi connection status feedback</s>
 * Bleeding edge and versioned apk download (I won't be putting this app on the Play Store)
 
+
+##Usage/Download
+You have the following options;
+* Clone repository and compile using gradle
+* [Bleeding edge download](/quickWifi/build/outputs/apk/quickWifi-debug.apk?raw=true)
+* [Version 1.0 download](/QuickWifi.apk?raw=true)
 ##Aim
 Novelty application of OCR (Optical Character Recognition)
 
@@ -35,8 +41,8 @@ Back of the router test produces varied results mainly due to the following accu
 
 ##Screenshots of Progress
 Capturing an image...
-![Alt text](/readme_img/photo.png?raw=true "Underside of a typical router")
+![Alt text](/readmeimg/photo.png?raw=true "Underside of a typical router")
 Cropping image..
-![Alt text](/readme_img/crop.png?raw=true "Underside of a typical router")
+![Alt text](/readmeimg/crop.png?raw=true "Underside of a typical router")
 Creating a configured WiFi connection using SSID and Key and adding it to the set of configured networks. Android will then handle connecting to it on it's own. 
-![Alt text](/readme_img/connect.png?raw=true "Connecting")
+![Alt text](/readmeimg/connect.png?raw=true "Connecting")
