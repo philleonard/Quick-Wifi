@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- From: file:/home/ppl/Dev/android-crop/lib/src/main/res/values-land/dimens.xml -->
-    <eat-comment />
-
-    <dimen name="crop__bar_height">40dp</dimen>
-
-</resources>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- From: file:/home/ppl/Dropbox/workspace/QuickWifi2/build/intermediates/exploded-aar/android-crop-0.9.8/res/values-large-land/values.xml -->
-    <eat-comment />
-
-    <dimen name="crop__bar_height">56dp</dimen>
-
-</resources>
