@@ -54,8 +54,13 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/quickWifi/src/main/java/com/westcoastlabs/quickwifi/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state vertical-scroll-proportion="0.46938777" vertical-offset="7305" max-vertical-offset="8070">
               <caret line="575" column="13" selection-start-line="575" selection-start-column="13" selection-end-line="575" selection-end-column="13" />
+=======
+            <state vertical-scroll-proportion="0.3877551" vertical-offset="7305" max-vertical-offset="8070">
+              <caret line="571" column="19" selection-start-line="571" selection-start-column="19" selection-end-line="571" selection-end-column="19" />
+>>>>>>> 204df89b623763ac1aea585954aaf08c535508da
               <folding>
                 <element signature="e#4716#5308#0" expanded="true" />
                 <element signature="e#5297#5298#0" expanded="true" />
@@ -2338,8 +2343,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/quickWifi/src/main/java/com/westcoastlabs/quickwifi/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.46938777" vertical-offset="7305" max-vertical-offset="8070">
           <caret line="575" column="13" selection-start-line="575" selection-start-column="13" selection-end-line="575" selection-end-column="13" />
+=======
+        <state vertical-scroll-proportion="0.3877551" vertical-offset="7305" max-vertical-offset="8070">
+          <caret line="571" column="19" selection-start-line="571" selection-start-column="19" selection-end-line="571" selection-end-column="19" />
+>>>>>>> 204df89b623763ac1aea585954aaf08c535508da
           <folding>
             <element signature="e#4716#5308#0" expanded="true" />
             <element signature="e#5297#5298#0" expanded="true" />
