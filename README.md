@@ -8,14 +8,15 @@ Quick-Wifi
 * <s>Camera flash</s> and picture mode options
 * Intro screen with app information.
 * <s>WiFi connection status feedback</s>
-* Bleeding edge and versioned apk download (I won't be putting this app on the Play Store)
+* <s>Bleeding edge and versioned apk download</s> (I won't be putting this app on the Play Store)
 
 
 ##Usage/Download
 You have the following options;
 * Clone repository and compile using gradle
-* [Bleeding edge download](/quickWifi/build/outputs/apk/quickWifi-debug.apk?raw=true)
-* [Version 1.0 download](/QuickWifi.apk?raw=true)
+* [Bleeding edge download](https://dl.dropboxusercontent.com/s/gqxf060x4z9q4su/quickWifi-debug.apk?dl=1)
+* [Version 1.0 download](https://dl.dropboxusercontent.com/s/guaxjn7gnbk45ho/QuickWifi.apk?dl=1)
+
 ##Aim
 Novelty application of OCR (Optical Character Recognition)
 
