@@ -25,7 +25,7 @@ Use of OCR to automatically connect to a WiFi AP after taking a photo of the und
 
 The app runs the Tesseract OCR system locally from compiled arm libraries for android: [Android Tesseract](https://github.com/rmtheis/tess-two)
 
-![Alt text](/readme_img/wireless-details.jpg?raw=true "Underside of a typical router")
+![Alt text](/readmeimg/wireless-details.jpg?raw=true "Underside of a typical router")
 
 ##How it works
 * Quick WiFi uses the android camera library to create it's own camera instance
