@@ -3,7 +3,7 @@
 Quick-Wifi 
 ==========
 
-![](/quickWifi/src/main/res/drawable-hdpi/ic_launcher.png?raw=true)
+![](/readmeimg/readmelogo.png?raw=true)
 
 ##TODO
 
