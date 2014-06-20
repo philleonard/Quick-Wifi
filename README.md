@@ -16,10 +16,18 @@ Quick-Wifi
 
 
 ##Usage/Download
+
 You have the following options;
 * Clone repository and compile using gradle
 * [Bleeding edge download](https://dl.dropboxusercontent.com/s/gqxf060x4z9q4su/quickWifi-debug.apk?dl=1)
 * [Version 1.0 download](https://dl.dropboxusercontent.com/s/guaxjn7gnbk45ho/QuickWifi.apk?dl=1)
+
+###Requirements
+* Android studio and gradle v1.10+
+* Android v4.0+ 
+* Android device with a camera. Better quality camera will give more reliable OCR results.
+* WiFi AP, with SSID and WPA password information printed on the back.
+* Alternately for more reliable results, the SSID and WPA key printed on a peice of paper in a larger font.
 
 ##Aim
 Novelty application of OCR (Optical Character Recognition)
