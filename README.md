@@ -57,5 +57,5 @@ Capturing an image...
 ![Alt text](/readmeimg/photo.png?raw=true "Underside of a typical router")
 Cropping image..
 ![Alt text](/readmeimg/crop.png?raw=true "Underside of a typical router")
-Creating a configured WiFi connection using SSID and Key and adding it to the set of configured networks. Android will then handle connecting to it on it's own. 
+Creating a configured WiFi connection using SSID and Key and adding it to the set of configured networks. Android will then handle connecting to it on its own. 
 ![Alt text](/readmeimg/connect.png?raw=true "Connecting")
