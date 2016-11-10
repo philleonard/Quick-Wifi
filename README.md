@@ -19,8 +19,7 @@ Quick-Wifi
 
 You have the following options;
 * Clone repository and compile using gradle
-* [Bleeding edge download](https://dl.dropboxusercontent.com/s/gqxf060x4z9q4su/quickWifi-debug.apk?dl=1)
-* [Version 1.0 download](https://dl.dropboxusercontent.com/s/guaxjn7gnbk45ho/QuickWifi.apk?dl=1)
+* [Version 1.0 download](https://www.dropbox.com/s/q3j5e6itul44gyu/QuickWifi.apk?dl=1)
 
 ###Requirements
 * Android studio and gradle v1.10+
